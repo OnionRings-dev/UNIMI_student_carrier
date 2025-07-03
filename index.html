@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMi Course Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .header h1 {
+            color: #111827;
+            margin-bottom: 8px;
+            font-size: 1.875rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .top-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #111827;
+            margin-bottom: 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #374151;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .course-selector {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .exams-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .exam-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        .exam-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .exam-item.completed {
+            background: #f0f9ff;
+            border-color: #bfdbfe;
+        }
+
+        .exam-checkbox {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .exam-info {
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        .exam-name {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .exam-details {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .exam-grade {
+            width: 80px;
+            text-align: center;
+        }
+
+        .exam-link {
+            margin-left: 12px;
+            padding: 6px 12px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #374151;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .exam-link:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .year-section {
+            margin-bottom: 24px;
+        }
+
+        .year-header {
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 16px;
+        }
+
+        .year-title {
+            font-weight: 600;
+            color: #111827;
+            font-size: 1.125rem;
+        }
+
+        .semester-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 12px;
+            padding-left: 12px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .no-course {
+            text-align: center;
+            padding: 48px;
+            color: #6b7280;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.875rem;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            .top-section {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .exam-item {
+                flex-wrap: wrap;
+                padding: 12px;
+            }
+
+            .exam-info {
+                margin-right: 0;
+                margin-bottom: 8px;
+                width: 100%;
+            }
+
+            .exam-grade {
+                width: 60px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exam-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .exam-checkbox {
+                margin-bottom: 8px;
+            }
+
+            .exam-grade {
+                width: 100%;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>UniMi Course Manager</h1>
+            <p>Gestisci i tuoi esami e calcola il voto di laurea</p>
+        </div>
+
+        <div class="top-section">
+            <div class="card">
+                <h2>Obiettivo di Laurea</h2>
+                <div class="form-group">
+                    <label for="targetGrade">Voto di Laurea Desiderato</label>
+                    <select id="targetGrade">
+                        <option value="">Seleziona voto...</option>
+                        <option value="66">66</option>
+                        <option value="70">70</option>
+                        <option value="75">75</option>
+                        <option value="80">80</option>
+                        <option value="85">85</option>
+                        <option value="90">90</option>
+                        <option value="95">95</option>
+                        <option value="100">100</option>
+                        <option value="105">105</option>
+                        <option value="110">110</option>
+                    </select>
+                </div>
+                <div id="gradeAlert" class="alert alert-info" style="display: none;"></div>
+            </div>
+
+            <div class="card">
+                <h2>Statistiche</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedExams">0</div>
+                        <div class="stat-label">Esami Fatti</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalExams">0</div>
+                        <div class="stat-label">Totale Esami</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="currentAverage">-</div>
+                        <div class="stat-label">Media Attuale</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="neededAverage">-</div>
+                        <div class="stat-label">Media Richiesta</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-selector">
+            <h2>Seleziona il tuo Corso</h2>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="courseSearch" placeholder="Cerca il tuo corso di laurea...">
+            </div>
+            <div class="form-group">
+                <label for="courseSelect">Corso di Laurea</label>
+                <select id="courseSelect">
+                    <option value="">Seleziona un corso...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="exams-section">
+            <h2>I tuoi Esami</h2>
+            <div id="examsContainer">
+                <div class="no-course">
+                    <p>Seleziona un corso di laurea per visualizzare gli esami</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let coursesData = null;
+        let currentCourse = null;
+        let examStates = {};
+
+        // Initialize the app
+        async function init() {
+            setupEventListeners();
+            await loadCoursesData();
+            loadSavedData();
+        }
+
+        // Load courses data from JSON file
+        async function loadCoursesData() {
+            try {
+                const response = await fetch('unimi_courses.json');
+                if (!response.ok) {
+                    throw new Error('Cannot load courses data');
+                }
+                coursesData = await response.json();
+                loadCourses();
+            } catch (error) {
+                console.error('Error loading courses data:', error);
+                // Fallback to sample data
+                coursesData = {
+                    "title": "Agricoltura sostenibile",
+                    "url": "https://www.unimi.it/it/corsi/laurea-triennale/agricoltura-sostenibile",
+                    "total_cfu": 180,
+                    "total_obligatory_exams": 40,
+                    "total_optional_exams": 0,
+                    "total_obligatory_cfu": 282,
+                    "total_optional_cfu": 0,
+                    "years": [
+                        {
+                            "year": 1,
+                            "semesters": [
+                                {
+                                    "semester": 1,
+                                    "obligatory_exams": [
+                                        {
+                                            "name": "Chimica generale e inorganica",
+                                            "cfu": 6,
+                                            "hours": 56,
+                                            "language": "Italiano",
+                                            "ssd": "CHIM/03",
+                                            "link": "https://www.unimi.it/it/corsi/insegnamenti-dei-corsi-di-laurea/2026/chimica-generale-e-inorganica-12"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                };
+                loadCourses();
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('courseSearch').addEventListener('input', handleCourseSearch);
+            document.getElementById('courseSelect').addEventListener('change', handleCourseSelect);
+            document.getElementById('targetGrade').addEventListener('change', handleTargetGradeChange);
+        }
+
+        function loadCourses() {
+            const courseSelect = document.getElementById('courseSelect');
+            
+            // Clear existing options except the first one
+            while (courseSelect.children.length > 1) {
+                courseSelect.removeChild(courseSelect.lastChild);
+            }
+            
+            // If coursesData is an array of courses
+            if (Array.isArray(coursesData)) {
+                coursesData.forEach((course, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = course.title;
+                    courseSelect.appendChild(option);
+                });
+            } 
+            // If coursesData is a single course object
+            else if (coursesData && coursesData.title) {
+                const option = document.createElement('option');
+                option.value = 'single-course';
+                option.textContent = coursesData.title;
+                courseSelect.appendChild(option);
+            }
+        }
+
+        function handleCourseSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const courseSelect = document.getElementById('courseSelect');
+            const options = courseSelect.querySelectorAll('option');
+            
+            options.forEach(option => {
+                if (option.value === '') return;
+                const courseTitle = option.textContent.toLowerCase();
+                option.style.display = courseTitle.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+
+        function handleCourseSelect(e) {
+            const courseId = e.target.value;
+            if (courseId) {
+                // Handle array of courses
+                if (Array.isArray(coursesData)) {
+                    currentCourse = coursesData[parseInt(courseId)];
+                } 
+                // Handle single course
+                else {
+                    currentCourse = coursesData;
+                }
+                
+                if (currentCourse) {
+                    loadExams();
+                    saveData();
+                }
+            } else {
+                currentCourse = null;
+                document.getElementById('examsContainer').innerHTML = '<div class="no-course"><p>Seleziona un corso di laurea per visualizzare gli esami</p></div>';
+            }
+        }
+
+        function handleTargetGradeChange() {
+            calculateRequiredAverage();
+            saveData();
+        }
+
+        function loadExams() {
+            if (!currentCourse) return;
+
+            const container = document.getElementById('examsContainer');
+            container.innerHTML = '';
+
+            currentCourse.years.forEach(year => {
+                const yearDiv = document.createElement('div');
+                yearDiv.className = 'year-section';
+                
+                const yearHeader = document.createElement('div');
+                yearHeader.className = 'year-header';
+                yearHeader.innerHTML = `<div class="year-title">${year.year}° Anno</div>`;
+                yearDiv.appendChild(yearHeader);
+
+                year.semesters.forEach(semester => {
+                    if (semester.obligatory_exams && semester.obligatory_exams.length > 0) {
+                        const semesterTitle = document.createElement('div');
+                        semesterTitle.className = 'semester-title';
+                        semesterTitle.textContent = semester.semester === 'unknown' ? 'Semestre non specificato' : `${semester.semester}° Semestre`;
+                        yearDiv.appendChild(semesterTitle);
+
+                        semester.obligatory_exams.forEach(exam => {
+                            const examDiv = createExamItem(exam);
+                            yearDiv.appendChild(examDiv);
+                        });
+                    }
+                });
+
+                container.appendChild(yearDiv);
+            });
+
+            updateStats();
+        }
+
+        function createExamItem(exam) {
+            const examDiv = document.createElement('div');
+            examDiv.className = 'exam-item';
+            
+            const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+            const examState = examStates[examId] || { completed: false, grade: '' };
+            
+            if (examState.completed) {
+                examDiv.classList.add('completed');
+            }
+
+            examDiv.innerHTML = `
+                <input type="checkbox" class="exam-checkbox" id="${examId}" ${examState.completed ? 'checked' : ''}>
+                <div class="exam-info">
+                    <div class="exam-name">${exam.name}</div>
+                    <div class="exam-details">${exam.cfu} CFU • ${exam.ssd} • ${exam.hours} ore</div>
+                </div>
+                <input type="number" class="exam-grade" min="18" max="31" placeholder="Voto" value="${examState.grade}" ${!examState.completed ? 'disabled' : ''}>
+                <a href="${exam.link}" target="_blank" class="exam-link">Info</a>
+            `;
+
+            const checkbox = examDiv.querySelector('.exam-checkbox');
+            const gradeInput = examDiv.querySelector('.exam-grade');
+
+            checkbox.addEventListener('change', () => {
+                const completed = checkbox.checked;
+                examStates[examId] = { ...examStates[examId], completed };
+                
+                if (completed) {
+                    examDiv.classList.add('completed');
+                    gradeInput.disabled = false;
+                } else {
+                    examDiv.classList.remove('completed');
+                    gradeInput.disabled = true;
+                    gradeInput.value = '';
+                    examStates[examId].grade = '';
+                }
+                
+                updateStats();
+                saveData();
+            });
+
+            gradeInput.addEventListener('input', () => {
+                examStates[examId].grade = gradeInput.value;
+                updateStats();
+                saveData();
+            });
+
+            return examDiv;
+        }
+
+        function updateStats() {
+            if (!currentCourse) return;
+
+            const allExams = getAllExams();
+            const completedExams = allExams.filter(exam => {
+                const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+                return examStates[examId] && examStates[examId].completed;
+            });
+
+            const totalExams = allExams.length;
+            const completedCount = completedExams.length;
+            
+            document.getElementById('completedExams').textContent = completedCount;
+            document.getElementById('totalExams').textContent = totalExams;
+            
+            const progress = totalExams > 0 ? (completedCount / totalExams) * 100 : 0;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Calculate current average
+            const gradesWithCfu = completedExams.map(exam => {
+                const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+                const grade = parseFloat(examStates[examId].grade) || 0;
+                return { grade, cfu: exam.cfu };
+            }).filter(item => item.grade > 0);
+
+            let currentAverage = 0;
+            if (gradesWithCfu.length > 0) {
+                const totalWeightedGrades = gradesWithCfu.reduce((sum, item) => sum + (item.grade * item.cfu), 0);
+                const totalCfu = gradesWithCfu.reduce((sum, item) => sum + item.cfu, 0);
+                currentAverage = totalWeightedGrades / totalCfu;
+            }
+
+            document.getElementById('currentAverage').textContent = currentAverage > 0 ? currentAverage.toFixed(2) : '-';
+            
+            calculateRequiredAverage();
+        }
+
+        function calculateRequiredAverage() {
+            const targetGrade = parseFloat(document.getElementById('targetGrade').value);
+            const gradeAlert = document.getElementById('gradeAlert');
+            
+            if (!targetGrade || !currentCourse) {
+                document.getElementById('neededAverage').textContent = '-';
+                gradeAlert.style.display = 'none';
+                return;
+            }
+
+            const allExams = getAllExams();
+            const completedExams = allExams.filter(exam => {
+                const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+                return examStates[examId] && examStates[examId].completed;
+            });
+
+            const remainingExams = allExams.filter(exam => {
+                const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+                return !examStates[examId] || !examStates[examId].completed;
+            });
+
+            // Calculate current weighted sum
+            const currentWeightedSum = completedExams.reduce((sum, exam) => {
+                const examId = `exam-${exam.name.replace(/\s+/g, '-').toLowerCase()}`;
+                const grade = parseFloat(examStates[examId].grade) || 0;
+                return sum + (grade * exam.cfu);
+            }, 0);
+
+            const currentCfu = completedExams.reduce((sum, exam) => sum + exam.cfu, 0);
+            const remainingCfu = remainingExams.reduce((sum, exam) => sum + exam.cfu, 0);
+            const totalCfu = currentCfu + remainingCfu;
+
+            // Calculate required average for remaining exams
+            const requiredTotalWeightedSum = (targetGrade * totalCfu) / 110 * 30; // Convert from 110 scale to 30 scale
+            const requiredRemainingWeightedSum = requiredTotalWeightedSum - currentWeightedSum;
+            const requiredAverage = remainingCfu > 0 ? requiredRemainingWeightedSum / remainingCfu : 0;
+
+            document.getElementById('neededAverage').textContent = requiredAverage > 0 ? requiredAverage.toFixed(2) : '-';
+
+            // Show alert based on feasibility
+            if (requiredAverage > 31) {
+                gradeAlert.className = 'alert alert-warning';
+                gradeAlert.textContent = 'Obiettivo non raggiungibile con i voti massimi (31)';
+                gradeAlert.style.display = 'block';
+            } else if (requiredAverage < 18) {
+                gradeAlert.className = 'alert alert-info';
+                gradeAlert.textContent = 'Obiettivo facilmente raggiungibile!';
+                gradeAlert.style.display = 'block';
+            } else {
+                gradeAlert.className = 'alert alert-info';
+                gradeAlert.textContent = `Devi mantenere una media di ${requiredAverage.toFixed(2)} negli esami rimanenti`;
+                gradeAlert.style.display = 'block';
+            }
+        }
+
+        function getAllExams() {
+            if (!currentCourse) return [];
+            
+            const allExams = [];
+            currentCourse.years.forEach(year => {
+                year.semesters.forEach(semester => {
+                    if (semester.obligatory_exams) {
+                        allExams.push(...semester.obligatory_exams);
+                    }
+                });
+            });
+            return allExams;
+        }
+
+        function saveData() {
+            const data = {
+                selectedCourse: currentCourse ? 'agricoltura-sostenibile' : null,
+                examStates: examStates,
+                targetGrade: document.getElementById('targetGrade').value
+            };
+            
+            // In a real app, this would save to localStorage
+            // localStorage.setItem('unimi-course-data', JSON.stringify(data));
+        }
+
+        function loadSavedData() {
+            // In a real app, this would load from localStorage
+            // const saved = localStorage.getItem('unimi-course-data');
+            // if (saved) {
+            //     const data = JSON.parse(saved);
+            //     examStates = data.examStates || {};
+            //     if (data.selectedCourse) {
+            //         document.getElementById('courseSelect').value = data.selectedCourse;
+            //         handleCourseSelect({ target: { value: data.selectedCourse } });
+            //     }
+            //     if (data.targetGrade) {
+            //         document.getElementById('targetGrade').value = data.targetGrade;
+            //     }
+            // }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
