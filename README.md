@@ -65,14 +65,13 @@ Questo progetto è rilasciato sotto la licenza MIT. Vedi il file [LICENSE](LICEN
 
 - **Issues**: [GitHub Issues](https://github.com/OnionRings-dev/UNIMI_student_carrier/issues)
 - **Discussioni**: [GitHub Discussions](https://github.com/OnionRings-dev/UNIMI_student_carrier/discussions)
-- **Email**: [Inserisci email se desideri]
+- **Email**: info@onionrings.dev
 
 ## 📋 Changelog
 
 ### [Versione Corrente] - 2025-07-05
 - Fork del progetto originale
 - Miglioramenti alla documentazione
-- [Altre modifiche specifiche]
 
 ### [Versioni Precedenti]
 - Vedi [CHANGELOG.md](CHANGELOG.md) per la cronologia completa
